@@ -1,9 +1,9 @@
 # LLM Configuration
 llm:
-  model_name: "llama3" 
-  base_url: "http://localhost:11434" 
-  temperature: 0.7 
-  max_tokens: 512 
+  model_name: "llama3"
+  base_url: "http://localhost:11434"
+  temperature: 0.7
+  max_tokens: 512
 
 # Agent Prompt Templates
 prompts:
@@ -11,11 +11,14 @@ prompts:
     You are an AI assistant specialized in Python code documentation.
     Analyze the following Python code and its existing comment (if any).
     Identify areas where the comment could be improved for clarity, completeness, accuracy, or adherence to best practices (e.g., docstrings, parameters, return values).
+    Rate the quality of the *existing comment* on a scale of 1 to 5, where 1 is very poor and 5 is excellent.
 
-    Output a JSON object with:
+    Output ONLY a JSON object. Do NOT include any other text, explanation, or markdown outside of the JSON.
+    The JSON object MUST contain:
+    - "quality_rating": An integer rating (1-5) of the existing comment's quality.
     - "assessment": A brief summary of the current comment's quality.
-    - "suggestions": A list of specific improvement points.
-    - "existing_comment_good": true/false if the existing comment is already excellent.
+    - "suggestions": A list of specific improvement points. If no suggestions, use an empty list.
+    - "existing_comment_good": true/false if the existing comment is already excellent (if true, suggestions should be empty and rating should be 5).
 
     Code:
     ```python
@@ -24,8 +27,8 @@ prompts:
     Existing Comment:
     {existing_comment}
     ---
-    Analysis:
-  
+    JSON Output:
+
   generate_improved_comment: |
     You are an expert Python code documenter.
     Based on the following code and the provided improvement suggestions, generate a concise, clear, and accurate new comment or docstring. Focus on describing the function's purpose, arguments, and return values.
@@ -38,14 +41,14 @@ prompts:
     {suggestions}
     ---
     New Comment:
-  
+
   critique_generated_comment: |
     You are a critical code reviewer.
     Evaluate the following *generated* comment for a given code snippet.
     Consider its clarity, accuracy, completeness, and whether it addresses the previous improvement suggestions.
-    Rate its quality on a scale of 1 to 5, and provide concise feedback.
 
-    Output a JSON object with:
+    Output ONLY a JSON object. Do NOT include any other text, explanation, or markdown outside of the JSON.
+    The JSON object MUST contain:
     - "rating": an integer from 1 (poor) to 5 (excellent).
     - "feedback": A short explanation of why it received that rating, and any remaining suggestions.
     - "ready_for_output": true/false (true if rating >= 4 and feedback is positive).
@@ -56,8 +59,8 @@ prompts:
     ```
     Original Comment (for context):
     {original_comment}
-    
+
     Generated Comment (to critique):
     {generated_comment}
     ---
-    Critique:
+    JSON Output:

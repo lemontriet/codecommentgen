@@ -1,0 +1,4 @@
+{"id": "ex_001", "code": "def calculate_area(radius):\n    \"\"\"Calculates the area.\"\"\"\n    return 3.14159 * radius**2", "comment": "Calculates the area."}
+{"id": "ex_002", "code": "def divide(a, b):\n    # Divides two numbers\n    return a / b", "comment": "Divides two numbers"}
+{"id": "ex_003", "code": "def greet(name):\n    return f\"Hello, {name}!\"", "comment": ""}
+{"id": "ex_004", "code": "class MyDataProcessor:\n    def __init__(self, data):\n        self.data = data\n\n    def process(self):\n        \"\"\"Process the data.\"\"\"\n        return [x * 2 for x in self.data]", "comment": "Process the data."}
